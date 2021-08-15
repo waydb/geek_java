@@ -31,10 +31,16 @@ public class MyClassLoader extends ClassLoader{
     FileInputStream fis = new FileInputStream(file);
     DataInputStream dis = new DataInputStream(fis);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    for (int i = 0; i < file.length(); i ++) {
-      baos.write(255 - dis.read());
+    try {
+      for (int i = 0; i < file.length(); i ++) {
+        baos.write(255 - dis.read());
+      }
+      return  baos.toByteArray();
+    } finally {
+     baos.close();
+     dis.close();
+     fis.close();
     }
-    return  baos.toByteArray();
   }
 
   public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {

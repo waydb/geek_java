@@ -9,7 +9,7 @@ import java.io.IOException;
 public class OKHttpClientTest {
 
   public static void main(String[] args) throws IOException {
-    String url = "http://www.baidu.com/";
+    String url = "http://127.0.0.1:8808";
     OkHttpClient okHttpClient = new OkHttpClient(); // 创建OkHttpClient对象
     Request request = new Request.Builder().url(url).build(); // 创建一个请求
     Response response = okHttpClient.newCall(request).execute(); // 返回实体

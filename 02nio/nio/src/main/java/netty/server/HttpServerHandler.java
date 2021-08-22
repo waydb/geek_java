@@ -1,4 +1,4 @@
-package netty;
+package netty.server;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -12,9 +12,10 @@ import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaderValues.KEEP_ALIVE;
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_0;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
-public class HttpHandler extends ChannelInboundHandlerAdapter {
+public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
   /**
    * Calls {@link ChannelHandlerContext#fireChannelRead(Object)} to forward
@@ -71,7 +72,7 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
       String value = body;
 
       response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(value.getBytes("UTF-8")));
-      response.headers().set("Content-Type", "application/json");
+      response.headers().set("Content-Type", "text/plain");
       response.headers().setInt("Content-Length", response.content().readableBytes());
 
     } catch (Exception e) {

@@ -1,4 +1,4 @@
-package netty;
+package netty.server;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -6,7 +6,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
-public class HttpInitializer extends ChannelInitializer {
+public class HttpServerChannelInitializer extends ChannelInitializer {
 
   @Override
   protected void initChannel(Channel ch) throws Exception {
@@ -14,6 +14,6 @@ public class HttpInitializer extends ChannelInitializer {
     // add handlers
     p.addLast(new HttpServerCodec());
     p.addLast(new HttpObjectAggregator(1024 * 1024));
-    p.addLast(new HttpHandler());
+    p.addLast(new HttpServerHandler());
   }
 }

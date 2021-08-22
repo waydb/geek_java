@@ -1,10 +1,10 @@
 package gateway;
 
+import gateway.inbound.InboundChannelInitailizer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
@@ -34,7 +34,7 @@ public class GatewayApplication {
       b.group(bossGroup, workerGroup)      // 设置eventloopGroup
           .channel(NioServerSocketChannel.class) // 设置channel类型
           .handler(new LoggingHandler(LogLevel.INFO)) // 设置handler handler/childHandler的区别和option/childOption的区别类似
-          .childHandler(new GatewayChannelInitailizer());
+          .childHandler(new InboundChannelInitailizer());
 
       Channel ch = b.bind(port).sync().channel();
       System.out.println("开启API Gatway服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');

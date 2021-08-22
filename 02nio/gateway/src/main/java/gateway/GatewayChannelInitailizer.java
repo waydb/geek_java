@@ -14,7 +14,7 @@ public class GatewayChannelInitailizer  extends ChannelInitializer {
 
     p.addLast(new HttpServerCodec());
     p.addLast(new HttpObjectAggregator(1024 * 1024));
-    p.addLast(new HttpServerHandler());
+    p.addLast(new HttpInboundChannelHandler());
   }
 
 }

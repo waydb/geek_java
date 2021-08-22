@@ -16,41 +16,49 @@ import java.net.URISyntaxException;
 
 public class NettyHttpClient {
 
-  public static void main(String[] args) {
-    EventLoopGroup group = new NioEventLoopGroup();
+  private EventLoopGroup group;
+  private Bootstrap clientStrap;
 
+  public NettyHttpClient() {
+    this.group = new NioEventLoopGroup();
+
+    this.clientStrap = new Bootstrap();
+
+    clientStrap.group(group);
+
+    clientStrap.channel(NioSocketChannel.class);
+
+    clientStrap.option(ChannelOption.SO_KEEPALIVE, true);
+
+    clientStrap.handler(new HttpClientChannelInitializer());
+  }
+
+  public void sendGet(String host, int port, URI uri) {
     try {
-      Bootstrap clientStrap = new Bootstrap();
-
-      clientStrap.group(group);
-
-      clientStrap.channel(NioSocketChannel.class);
-
-      clientStrap.option(ChannelOption.SO_KEEPALIVE, true);
-
-      clientStrap.handler(new HttpClientChannelInitializer());
-
-
-      ChannelFuture cf = clientStrap.connect("127.0.0.1", 8808).sync();
-      URI uri = new URI("/test");
+      ChannelFuture cf = clientStrap.connect(host, port).sync();
       DefaultFullHttpRequest request = new DefaultFullHttpRequest(
           HttpVersion.HTTP_1_1, HttpMethod.GET, uri.toASCIIString());
-
-//      request.headers().set(HttpHeaderNames.CONNECTION,
-//          HttpHeaderNames.CONNECTION);
-//      request.headers().set(HttpHeaderNames.CONTENT_LENGTH,
-//          request.content().readableBytes());
-
-      // 发送http请求
       cf.channel().write(request);
       cf.channel().flush();
       cf.channel().closeFuture().sync();
     } catch (InterruptedException e) {
       e.printStackTrace();
+    }
+  }
+
+  public void close() {
+    group.shutdownGracefully();
+  }
+
+  public static void main(String[] args) {
+    NettyHttpClient client = new NettyHttpClient();
+    try {
+      client.sendGet("127.0.0.1", 8808, new URI("/test"));
     } catch (URISyntaxException e) {
       e.printStackTrace();
     } finally {
-      group.shutdownGracefully();
+      client.close();
     }
   }
+
 }

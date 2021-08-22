@@ -14,7 +14,7 @@ public class GatewayApplication {
 
   public static void main(String[] args) throws InterruptedException {
 
-    int port = 8808;
+    int port = 8809;
 
     // 主从reactor模型 的主selector
     EventLoopGroup bossGroup = new NioEventLoopGroup(2);
@@ -37,7 +37,7 @@ public class GatewayApplication {
           .childHandler(new GatewayChannelInitailizer());
 
       Channel ch = b.bind(port).sync().channel();
-      System.out.println("开启netty http服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');
+      System.out.println("开启API Gatway服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');
       ch.closeFuture().sync();
     } finally {
       bossGroup.shutdownGracefully();

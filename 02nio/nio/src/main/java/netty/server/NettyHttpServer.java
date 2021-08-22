@@ -15,7 +15,7 @@ import netty.server.HttpServerChannelInitializer;
 public class NettyHttpServer {
   public static void main(String[] args) throws InterruptedException {
 
-    int port = 8808;
+    int port = 8801;
 
     // 主从reactor模型 的主selector
     EventLoopGroup bossGroup = new NioEventLoopGroup(2);
